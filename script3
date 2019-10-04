@@ -1,6 +1,15 @@
 #!/bin/bash
 # assign variables
 ACTION=${1}
+version="1.0.1"
+
+function show_version() {
+echo $version
+}
+
+function delete_file() {
+rm "${1}-12345"
+}
 
 function create_file() {
 touch "${1}-12345"
@@ -9,11 +18,17 @@ touch "${1}-12345"
 function display_help() {
 
 cat << EOF
-Usage: ${0} {-c|--create|-h|--help}
+Usage: ${0} {-v|--version|-d|--delete|-c|--create|-h|--help} <filenmae>
 OPTIONS:
+	-v | --version 	Show version
+	-d | --delete	Delete file
 	-c | --create	Create a new file
 	-h | --help	Display the command help
 Examples:
+	Show version
+		$ ${0} -v
+	Delete file
+		$ ${0} -d foo.txt
 	Create a new file:
 		$ ${0} -c foo.txt
 	Display help:
@@ -28,8 +43,14 @@ case "$ACTION" in
 		-c|--create)
 			create_file "${2:-server}"
 			;;
+		-d|--delete)
+			delete_file "${2:-server}"
+			;;
+		-v|--version)
+			show_version
+			;;
 		*)
-		echo "Usage ${0} {-c|-h}"
+		echo "Usage ${0} {-v|-d|-c|-h}"
 		exit 1
 esac
 
